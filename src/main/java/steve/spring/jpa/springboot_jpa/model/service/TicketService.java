@@ -20,13 +20,13 @@ public interface TicketService {
 
     /**
      * 叫号(开始业务)-数据库
-     * @return 叫号结果
+     * @return 叫号票的id
      */
-    Boolean startServiceByDB();
+    String startServiceByDB();
 
     /**
      * 叫号(开始业务)-缓存
-     * @return 叫号结果
+     * @return 叫号的票的id
      */
-    Boolean startServiceByCache();
+    String startServiceByCache();
 }

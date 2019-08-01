@@ -45,27 +45,34 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	@Transactional
-	public synchronized Boolean startServiceByDB() {
-		boolean status = false;
-		// 不能单独锁住ticketStatus String类型不能作为锁 https://blog.csdn.net/venus321/article/details/79389360
+	public synchronized String startServiceByDB() {
+		/**
+		 * synchronized常用方式
+		 * 1.静态方法加上关键字
+		 * 2.实例方法（也就是普通方法）加上关键字
+		 * 3.方法中使用同步代码块（锁对象相当于一个监视者，锁对象的引用在同步块中尽量保持不变，若锁对象的引用发生改变则锁被释放,常用synchronized(this){}）
+ 		 */
+		String resultTicketId = "";
 		TicketInfo ticketInfo = ticketDao.findOldestTicketByTicketStatus("0");
-		ticketInfo.setTicketStatus("1");
-		ticketDao.save(ticketInfo);
-		status = true;
-		return status;
+		if (ticketInfo != null) {
+			ticketInfo.setTicketStatus("1");
+			ticketDao.save(ticketInfo);
+			resultTicketId = ticketInfo.getTicketId();
+		}
+		return resultTicketId;
 	}
 
 	@Override
 	@Transactional
-	public Boolean startServiceByCache() {
+	public String startServiceByCache() {
 		// 注：在缓存中存在大量读的业务，在数据库中存在大量写的任务，读写分离，不存在线程冲突问题
-		boolean status = false;
+		String resultTicketId = "";
 		int bound = 100;
 		// 从缓存中读取数据
 		int totalNum = ticketDao.countByTicketStatus("0");
 		if (totalNum < bound) {
 			//数据量太小时使用缓存反而影响运行效率
-			startServiceByDB();
+			resultTicketId = startServiceByDB();
 		} else {
 
 
@@ -77,13 +84,14 @@ public class TicketServiceImpl implements TicketService {
 			// 为了保证数据的完整性此处不能使用短路与
 			if (ticketId != null & ticketType != null & ticketTime != null & ticketStatus != null) {
 				ticketDao.save(ticketInfo);
+				resultTicketId = ticketId;
 			} else {
 				// 缓存中的数据已被读完需要重新加载
 				init();
+				resultTicketId = startServiceByCache();
 			}
 		}
-		status = true;
-		return status;
+		return resultTicketId;
 	}
 
 	// 缓存初始化方法,只允许单线程进入
