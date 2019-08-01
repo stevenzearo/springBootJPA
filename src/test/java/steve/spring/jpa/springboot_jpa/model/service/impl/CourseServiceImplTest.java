@@ -28,4 +28,8 @@ public class CourseServiceImplTest {
 //        Page<Course> courseInfoPage = courseService.getCourseInfoPage(1, 5);
 //        courseInfoPage.getContent().forEach(course -> logger.info(course.getCourseDate()));
     }
+    /*@Test
+    public void taskTest(){
+        courseService.taskTest();
+    }*/
 }

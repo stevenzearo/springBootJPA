@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import steve.spring.jpa.springboot_jpa.model.pojo.TicketInfo;
-
-import static org.junit.Assert.*;
 
 /**
  * @Author steve

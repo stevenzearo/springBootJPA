@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import steve.spring.jpa.springboot_jpa.model.dao.CourseDao;
 import steve.spring.jpa.springboot_jpa.model.pojo.Course;
@@ -24,4 +25,9 @@ public class CourseServiceImpl implements CourseService {
     public Page<Course> getCourseInfoPage(Pageable pageable) {
         return  courseDao.findAll(pageable);
     }
+    /*@Scheduled(cron = "1/1 * * * * ?")
+    public void taskTest(){
+        System.out.println("task running......");
+    }*/
+
 }

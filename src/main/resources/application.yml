@@ -3,7 +3,7 @@ spring:
     name: springBoot
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test1?serverTimezone=UTC
+    url: jdbc:mysql://192.168.6.198:3306/test1?serverTimezone=UTC
     username: root
     password: root
 
