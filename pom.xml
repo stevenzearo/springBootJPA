@@ -68,6 +68,16 @@
 			<artifactId>jedis</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<!--加入轻量级压力测试工具-->
+
+		<!-- https://mvnrepository.com/artifact/org.databene/contiperf -->
+		<dependency>
+			<groupId>org.databene</groupId>
+			<artifactId>contiperf</artifactId>
+			<version>2.2.0</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>

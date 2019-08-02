@@ -1,5 +1,6 @@
 package steve.spring.jpa.springboot_jpa;
 
+import org.databene.contiperf.PerfTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class RedisTest {
     @Autowired
     private Jedis jedis;
     @Test
+    @PerfTest(invocations = 100, threads = 100)
     public void testString(){
         jedis.set("hello", "world");
         System.out.println(jedis.get("hello"));

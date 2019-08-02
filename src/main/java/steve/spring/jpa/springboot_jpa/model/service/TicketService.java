@@ -29,4 +29,6 @@ public interface TicketService {
      * @return 叫号的票的id
      */
     String startServiceByCache();
+
+    void cacheInit();
 }

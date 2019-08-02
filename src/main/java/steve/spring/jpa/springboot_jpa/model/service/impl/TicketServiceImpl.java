@@ -1,8 +1,10 @@
 package steve.spring.jpa.springboot_jpa.model.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 import steve.spring.jpa.springboot_jpa.model.dao.TicketDao;
@@ -21,18 +23,16 @@ import java.util.UUID;
  * @Time 18:23
  * @Version 1.0
  */
+@Service
 public class TicketServiceImpl implements TicketService {
 	@Autowired
-	private static TicketDao ticketDao;
+	private TicketDao ticketDao;
 	@Autowired
-	private static Jedis jedis;
-
-	static {
-		init();
-	}
+	private Jedis jedis;
 
 	@Override
 	@Transactional
+	@Cacheable(value = "tickets")
 	public TicketInfo getTicket(String ticketType) {
 		String ticketId = UUID.randomUUID().toString();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -95,7 +95,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	// 缓存初始化方法,只允许单线程进入
-	private static synchronized void init() {
+	private synchronized void init() {
 		int cacheNum = 100;
 		// 总的已取票未叫号条数
 		Page<TicketInfo> ticketInfoPage = ticketDao.findByTicketStatusOrderByTicketTimeAsc("0", PageRequest.of(0, cacheNum));
@@ -114,4 +114,8 @@ public class TicketServiceImpl implements TicketService {
 		}
 	}
 
+	@Override
+	public void cacheInit() {
+		init();
+	}
 }

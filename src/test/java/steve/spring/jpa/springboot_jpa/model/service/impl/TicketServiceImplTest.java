@@ -16,8 +16,7 @@ import steve.spring.jpa.springboot_jpa.model.service.TicketService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TicketServiceImplTest {
-    @Autowired
-    private TicketService ticketService;
+    private TicketService ticketService = new TicketServiceImpl();
     @Test
     public void getTicket() {
     }
@@ -28,6 +27,7 @@ public class TicketServiceImplTest {
 
     @Test
     public void startServiceByCache() {
+        ticketService.cacheInit();
         ticketService.startServiceByCache();
     }
 
